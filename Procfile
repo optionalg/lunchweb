@@ -1,1 +1,1 @@
-web: lunchweb -port $PORT
+web: lunchweb -port $PORT -subject $SUBJECT -sheet-url $SHEET_URL
