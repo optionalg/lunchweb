@@ -91,13 +91,13 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		rows, err := CSVFromGoogleSheetsURL(*flagCSVURL)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("error: %v", err), http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("error from csv: %v", err), http.StatusInternalServerError)
 			return
 		}
 		header := rows[headerIndex]
 		row, err := findRowForToday(rows)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("error: %v", err), http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("error for today's row: %v", err), http.StatusInternalServerError)
 			return
 		}
 		oo := NewOrderOverview(header[1:], row[1:])
@@ -113,7 +113,7 @@ func main() {
 			"Order":        oo,
 		}
 		if err := t.Execute(w, data); err != nil {
-			http.Error(w, fmt.Sprintf("error: %v", err), http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("error in template: %v", err), http.StatusInternalServerError)
 			return
 		}
 	})
